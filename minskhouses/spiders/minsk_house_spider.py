@@ -42,7 +42,10 @@ class BookSpider(CrawlSpider):
 
         street_name_selector = "//div[@class='intro']/h3/text()"
         house_selector = "//a[re:test(@href, '/address/\d+-\d+')]/text()"
-        street["name"] = response.xpath(street_name_selector).extract_first()
+
+        street_name = response.xpath(street_name_selector).extract_first()
+        street_name = street_name.encode('utf-8').decode('utf-8')
+        street["name"] = street_name
         houses = response.xpath(house_selector).extract()
         houses = list(filter(lambda x: x.strip() != u"карта", houses))
         street["houses"] = houses
